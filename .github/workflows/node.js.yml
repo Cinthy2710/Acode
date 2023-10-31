@@ -1,0 +1,31 @@
+# Este flujo de trabajo hará una instalación limpia de dependencias de nodos, caché/restaurarlos, construir el código fuente y ejecutar pruebas en diferentes versiones del nodo
+# Para más información, véase: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+Nombre:  Node.js CI
+
+en:
+  Puesto :
+  ramas :  [ "principal" ]
+ pull_request :
+ ramas :  [ "principal" ]
+
+Empleos:
+  construcción :
+
+ Run-on :  ubuntu-último
+
+ Estrategia :
+ Matriz :
+ Versión de nodo :  [14.x,  16.x,  18.x]
+        # Ver programa de lanzamiento de Node.js compatible en https://nodejs.org/en/about/releases/
+
+ pasos :
+     -  usos:  acciones/checkout@v3
+     -  Nombre: Usa Node.js ${{  matrix.node-version  }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
